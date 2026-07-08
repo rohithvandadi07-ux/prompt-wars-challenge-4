@@ -1,0 +1,15 @@
+{
+  "name": "challenge-4-",
+  "version": "1.0.0",
+  "description": "**StadiumSync AI** is a next-generation, highly-interactive, and visually stunning web application designed specifically for **Prompt Wars Challenge 4: Smart Stadiums & Tournament Operations**.",
+  "main": "script.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^30.4.2"
+  }
+}
