@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StadiumSync AI | FIFA 2026 Smart Operations</title>
+    <meta name="description" content="GenAI-enabled solution for stadium operations and tournament experience during FIFA World Cup 2026.">
+    <meta property="og:title" content="StadiumSync AI | FIFA 2026 Smart Operations">
+    <meta property="og:description" content="GenAI-enabled solution for stadium operations and tournament experience during FIFA World Cup 2026.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e', // FIFA 26 Green vibe
+                            600: '#16a34a',
+                            900: '#14532d',
+                        },
+                        dark: {
+                            bg: '#0f172a',
+                            card: '#1e293b',
+                            border: '#334155'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 dark:bg-dark-bg text-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 glass-effect border-b border-gray-200 dark:border-dark-border px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-500 to-blue-500 flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                    <i class="fa-solid fa-futbol"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-500 to-blue-500 tracking-tight">StadiumSync AI</h1>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">FIFA 2026 Smart Operations</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors" aria-label="Toggle Dark Mode">
+                    <i class="fa-solid fa-moon dark:hidden text-xl text-gray-700"></i>
+                    <i class="fa-solid fa-sun hidden dark:block text-xl text-yellow-400"></i>
+                </button>
+                <button id="settings-btn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors text-gray-700 dark:text-gray-300" aria-label="Settings">
+                    <i class="fa-solid fa-gear text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 py-8">
+        
+        <!-- Status Bar -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="glass-card p-4 rounded-2xl flex items-center space-x-4 border-l-4 border-brand-500 hover:-translate-y-1 hover:shadow-lg transition-transform duration-300">
+                <div class="p-3 bg-brand-500/10 text-brand-500 rounded-full" aria-hidden="true"><i class="fa-solid fa-users text-xl"></i></div>
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Current Attendance</p>
+                    <p class="text-2xl font-bold">68,432 <span class="text-xs text-brand-500 font-normal">85% Cap</span></p>
+                </div>
+            </div>
+            <div class="glass-card p-4 rounded-2xl flex items-center space-x-4 border-l-4 border-blue-500 hover:-translate-y-1 hover:shadow-lg transition-transform duration-300">
+                <div class="p-3 bg-blue-500/10 text-blue-500 rounded-full" aria-hidden="true"><i class="fa-solid fa-cloud-sun text-xl"></i></div>
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Weather</p>
+                    <p class="text-2xl font-bold">72°F <span class="text-xs text-gray-400 font-normal">Clear</span></p>
+                </div>
+            </div>
+            <div class="glass-card p-4 rounded-2xl flex items-center space-x-4 border-l-4 border-yellow-500 hover:-translate-y-1 hover:shadow-lg transition-transform duration-300">
+                <div class="p-3 bg-yellow-500/10 text-yellow-500 rounded-full" aria-hidden="true"><i class="fa-solid fa-bolt text-xl"></i></div>
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Power Grid Status</p>
+                    <p class="text-2xl font-bold text-green-500">Optimal <i class="fa-solid fa-check-circle text-sm" aria-hidden="true"></i></p>
+                </div>
+            </div>
+            <div class="glass-card p-4 rounded-2xl flex items-center space-x-4 border-l-4 border-red-500 cursor-pointer hover:bg-gray-100 dark:hover:bg-dark-card/80 hover:-translate-y-1 hover:shadow-lg transition-all duration-300" id="alerts-widget" role="button" tabindex="0" aria-label="View Active Alerts">
+                <div class="p-3 bg-red-500/10 text-red-500 rounded-full relative">
+                    <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+                    <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full animate-ping"></span>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Active Alerts</p>
+                    <p class="text-xl font-bold">Gate C Congestion</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Left Column: Operations & Heatmap -->
+            <div class="lg:col-span-2 space-y-8">
+                
+                <!-- Live Heatmap Section -->
+                <section class="glass-card rounded-3xl p-6 shadow-sm border border-gray-200 dark:border-dark-border relative overflow-hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-map-location-dot text-brand-500"></i> Smart Stadium Navigation
+                        </h2>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-green-500"></span> Clear</span>
+                            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-yellow-500"></span> Moderate</span>
+                            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-red-500"></span> Congested</span>
+                        </div>
+                    </div>
+                    
+                    <div class="relative w-full h-80 bg-gray-100 dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-300 dark:border-gray-700 p-4 flex items-center justify-center">
+                        <!-- Abstract Stadium Visualization -->
+                        <div class="relative w-full max-w-md aspect-video border-4 border-gray-400 dark:border-gray-600 rounded-[4rem] flex items-center justify-center stadium-pulse">
+                            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMTU2LCAxNjMsIDE3NSwgMC4yKSIvPjwvc3ZnPg==')] opacity-50"></div>
+                            
+                            <!-- Pitch -->
+                            <div class="w-3/5 h-3/5 bg-green-600/20 border-2 border-green-500/50 rounded-lg flex items-center justify-center">
+                                <div class="w-10 h-10 border-2 border-green-500/50 rounded-full"></div>
+                                <div class="absolute w-full h-px bg-green-500/50"></div>
+                            </div>
+
+                            <!-- Heatmap Nodes -->
+                            <div class="absolute top-4 left-1/4 w-8 h-8 rounded-full bg-green-500/40 blur-md animate-pulse"></div>
+                            <div class="absolute bottom-4 right-1/4 w-12 h-12 rounded-full bg-red-500/60 blur-md animate-pulse"></div>
+                            <div class="absolute top-1/2 left-4 w-10 h-10 rounded-full bg-yellow-500/50 blur-md animate-pulse"></div>
+                            <div class="absolute top-1/2 right-4 w-10 h-10 rounded-full bg-green-500/40 blur-md animate-pulse"></div>
+                            
+                            <!-- Zones labels -->
+                            <span class="absolute top-1 left-1/2 transform -translate-x-1/2 text-xs font-bold text-gray-500">North Stand</span>
+                            <span class="absolute bottom-1 left-1/2 transform -translate-x-1/2 text-xs font-bold text-gray-500">South Stand (Busy)</span>
+                            <span class="absolute top-1/2 left-2 transform -translate-y-1/2 -rotate-90 text-xs font-bold text-gray-500">West Gate</span>
+                            <span class="absolute top-1/2 right-2 transform -translate-y-1/2 rotate-90 text-xs font-bold text-gray-500">East Gate</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 flex gap-4">
+                        <button class="flex-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 py-2 rounded-xl text-sm font-medium transition flex items-center justify-center gap-2" onclick="suggestRoute()" aria-label="Suggest Optimal Route">
+                            <i class="fa-solid fa-route" aria-hidden="true"></i> Suggest Optimal Route
+                        </button>
+                        <button class="flex-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 py-2 rounded-xl text-sm font-medium transition flex items-center justify-center gap-2" onclick="suggestAccessibleRoute()" aria-label="Find Accessible Paths">
+                            <i class="fa-solid fa-wheelchair" aria-hidden="true"></i> Accessible Paths
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Sustainability & Transport -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <section class="glass-card rounded-3xl p-6 shadow-sm border border-gray-200 dark:border-dark-border">
+                        <h3 class="font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-leaf text-green-500"></i> Eco-Metrics</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span>Solar Energy Usage</span>
+                                    <span class="font-bold text-green-500">78%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="bg-green-500 h-2 rounded-full" style="width: 78%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span>Waste Diverted (Recycling)</span>
+                                    <span class="font-bold text-blue-500">62%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="bg-blue-500 h-2 rounded-full" style="width: 62%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="glass-card rounded-3xl p-6 shadow-sm border border-gray-200 dark:border-dark-border">
+                        <h3 class="font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-train-subway text-purple-500"></i> Transit Updates</h3>
+                        <ul class="space-y-3 text-sm">
+                            <li class="flex items-start gap-3 p-2 rounded-lg bg-gray-50 dark:bg-dark-bg/50">
+                                <i class="fa-solid fa-train text-green-500 mt-1"></i>
+                                <div>
+                                    <p class="font-semibold">Metro Line 1 (North)</p>
+                                    <p class="text-xs text-gray-500">On time. Next train in 4 mins.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3 p-2 rounded-lg bg-gray-50 dark:bg-dark-bg/50">
+                                <i class="fa-solid fa-bus text-yellow-500 mt-1"></i>
+                                <div>
+                                    <p class="font-semibold">Shuttle Bus (South Gate)</p>
+                                    <p class="text-xs text-gray-500">Slight delay due to traffic.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+
+            </div>
+
+            <!-- Right Column: AI Assistant -->
+            <div class="lg:col-span-1 flex flex-col h-[800px]">
+                <section class="glass-card rounded-3xl shadow-sm border border-brand-500/30 flex flex-col h-full overflow-hidden relative" style="box-shadow: 0 0 20px rgba(34, 197, 94, 0.1);">
+                    <!-- AI Header -->
+                    <div class="bg-gradient-to-r from-brand-600 to-blue-600 p-4 text-white flex justify-between items-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMjU1LCAyNTUsIDI1NSwgMC4xKSIvPjwvc3ZnPg==')] opacity-30"></div>
+                        <div class="flex items-center gap-3 relative z-10">
+                            <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm border border-white/30" aria-hidden="true">
+                                <i class="fa-solid fa-robot"></i>
+                            </div>
+                            <div>
+                                <h2 class="font-bold text-lg leading-tight">Stadium AI Concierge</h2>
+                                <p class="text-xs text-brand-100 flex items-center gap-1" aria-label="Status: Online">
+                                    <span class="w-2 h-2 rounded-full bg-green-300 animate-pulse" aria-hidden="true"></span> Online
+                                </p>
+                            </div>
+                        </div>
+                        <button class="relative z-10 hover:bg-white/20 p-2 rounded-lg transition" title="Clear Chat" aria-label="Clear Chat" onclick="clearChat()">
+                            <i class="fa-solid fa-rotate-right" aria-hidden="true"></i>
+                        </button>
+                    </div>
+
+                    <!-- Setup Banner (API Key) -->
+                    <div id="api-key-banner" class="bg-yellow-500/10 border-b border-yellow-500/20 p-3 text-sm">
+                        <div class="flex items-center justify-between mb-2">
+                            <p class="font-medium text-yellow-600 dark:text-yellow-500"><i class="fa-solid fa-key"></i> Setup Required</p>
+                            <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-xs text-blue-500 hover:underline">Get Key</a>
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="password" id="api-key-input" placeholder="Enter Gemini API Key..." class="flex-1 bg-white dark:bg-dark-bg border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-xs focus:outline-none focus:border-brand-500">
+                            <button onclick="saveApiKey()" class="bg-brand-500 hover:bg-brand-600 text-white px-3 py-1 rounded text-xs font-bold transition">Save</button>
+                        </div>
+                    </div>
+
+                    <!-- Chat Messages Area -->
+                    <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar bg-gray-50/50 dark:bg-dark-bg/30" aria-live="polite">
+                        <!-- Welcome Message -->
+                        <div class="flex flex-col gap-1 items-start">
+                            <div class="bg-white dark:bg-dark-card border border-gray-200 dark:border-gray-700 rounded-2xl rounded-tl-sm p-3 max-w-[85%] shadow-sm text-sm">
+                                👋 Welcome to the FIFA 2026 Smart Stadium! I am your AI Concierge powered by Google Gemini. 
+                                <br><br>
+                                I have real-time access to stadium operations, wait times, weather, and schedules. How can I assist you today? Try asking:
+                                <ul class="list-disc pl-4 mt-2 space-y-1 text-gray-600 dark:text-gray-300">
+                                    <li>"Where is the shortest line for food?"</li>
+                                    <li>"Translate 'Where is my seat' to Spanish."</li>
+                                    <li>"I lost my ticket, what do I do?"</li>
+                                </ul>
+                            </div>
+                            <span class="text-[10px] text-gray-400 ml-1">AI Concierge • Just now</span>
+                        </div>
+                    </div>
+
+                    <!-- Chat Input Area -->
+                    <div class="p-3 border-t border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card">
+                        <div class="flex items-end gap-2">
+                            <div class="flex-1 relative">
+                                <textarea id="chat-input" rows="1" placeholder="Ask anything... (supports multiple languages)" class="w-full bg-gray-100 dark:bg-dark-bg border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 resize-none custom-scrollbar" oninput="this.style.height = '';this.style.height = Math.min(this.scrollHeight, 120) + 'px'" aria-label="Chat input message"></textarea>
+                                <button id="voice-btn" class="absolute right-3 bottom-3 text-gray-400 hover:text-brand-500 transition" title="Voice Input (Demo)" onclick="toggleVoiceInput()" aria-label="Toggle voice input">
+                                    <i class="fa-solid fa-microphone" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <button onclick="sendMessage()" id="send-btn" class="w-11 h-11 bg-brand-500 hover:bg-brand-600 text-white rounded-xl flex items-center justify-center transition shadow-lg shrink-0 disabled:opacity-50 disabled:cursor-not-allowed" aria-label="Send Message">
+                                <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <p class="text-[10px] text-center text-gray-400 mt-2">AI can make mistakes. Verify important stadium info.</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 dark:border-dark-border py-6 mt-8">
+        <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-500">
+            <p>Built for Prompt Wars Challenge 4: Smart Stadiums & Tournament Operations.</p>
+            <p class="mt-1">Powered by Google Gemini API & Tailwind CSS.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
