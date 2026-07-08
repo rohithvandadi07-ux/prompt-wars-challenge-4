@@ -38,11 +38,23 @@ function init() {
             sendMessage();
         }
     });
+    chatInput.addEventListener('input', function() {
+        this.style.height = '';
+        this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+    });
 
     alertsWidget.addEventListener('click', () => {
         chatInput.value = "Tell me more about the congestion at Gate C and suggest an alternative route.";
         sendMessage();
     });
+
+    // Attach all other interactive buttons
+    document.getElementById('send-btn')?.addEventListener('click', sendMessage);
+    document.getElementById('clear-chat-btn')?.addEventListener('click', clearChat);
+    document.getElementById('save-api-btn')?.addEventListener('click', saveApiKey);
+    document.getElementById('voice-btn')?.addEventListener('click', toggleVoiceInput);
+    document.getElementById('suggest-route-btn')?.addEventListener('click', suggestRoute);
+    document.getElementById('suggest-accessible-btn')?.addEventListener('click', suggestAccessibleRoute);
 }
 
 // Theme Toggle
@@ -148,15 +160,22 @@ async function sendMessage() {
         let response;
         let usedDemoMode = false;
 
-        if (!GEMINI_API_KEY) {
-            // DEMO MODE FALLBACK: If no API key
+        if (!GEMINI_API_KEY || !isValidApiKeyFormat(GEMINI_API_KEY)) {
+            // DEMO MODE FALLBACK: If no API key or invalid format
             await new Promise(r => setTimeout(r, 1500)); // simulate network delay
             response = getDemoResponse(text);
             usedDemoMode = true;
         } else {
             // REAL GEN AI RESPONSE
             try {
-                response = await fetchGeminiResponse(text);
+                // Pass the API key and history to the extracted API function
+                response = await fetchGeminiResponse(text, GEMINI_API_KEY, chatHistory);
+                
+                // Update history
+                chatHistory.push({ role: "user", parts: [{ text }] });
+                chatHistory.push({ role: "model", parts: [{ text: response }] });
+                if (chatHistory.length > 10) chatHistory = chatHistory.slice(chatHistory.length - 10);
+                
             } catch (apiError) {
                 console.error("API Error caught, falling back to Demo Mode:", apiError);
                 
@@ -199,134 +218,7 @@ async function sendMessage() {
     }
 }
 
-// Demo mode is now managed via js/utils.js
-
-// Gemini API Integration
-/**
- * Calls the Gemini API with the given prompt and stadium context.
- * 
- * @param {string} prompt - The user's input.
- * @returns {Promise<string>} - The AI generated response.
- */
-async function fetchGeminiResponse(prompt) {
-    const systemInstruction = `You are the AI Concierge for the FIFA World Cup 2026 Smart Stadium ("StadiumSync AI"). 
-    Your job is to assist fans, organizers, and staff with navigation, crowd management, accessibility, transportation, sustainability, and multilingual assistance.
-    
-    Current Stadium Context:
-    - Current Attendance: 68,432 (85% Capacity)
-    - Weather: 72°F, Clear
-    - Alerts: Gate C is highly congested. South Stand is busy.
-    - Transit: Metro Line 1 is on time. Shuttle Bus at South Gate has a slight delay.
-    - Food: Nearest low-queue food stand is "Burger Blast" near Section 112 (West Gate).
-    
-    Rules:
-    - Keep responses concise, friendly, and helpful.
-    - Use Markdown for formatting (bolding, lists).
-    - If asked for navigation or avoiding crowds, always reference the current context (e.g., advising them to avoid Gate C).
-    - You can translate on the fly if asked to.`;
-
-    const requestBody = {
-        contents: [
-            ...chatHistory,
-            {
-                role: "user",
-                parts: [{ text: prompt }]
-            }
-        ],
-        systemInstruction: {
-            parts: [{ text: systemInstruction }]
-        },
-        generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: 800,
-        }
-    };
-
-    let data = null;
-    let lastError = null;
-    let selectedModel = null;
-    let availableModelNames = [];
-
-    try {
-        // Step 1: Dynamically fetch the list of available models for this specific API key
-        const listResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${GEMINI_API_KEY}`);
-        
-        if (!listResponse.ok) {
-            const err = await listResponse.json();
-            throw new Error(`ListModels Error: ${err.error?.message || 'Failed'}`);
-        }
-        
-        const listData = await listResponse.json();
-        const models = listData.models || [];
-        
-        // Find all models that support generateContent
-        const generateModels = models.filter(m => m.supportedGenerationMethods && m.supportedGenerationMethods.includes("generateContent"));
-        availableModelNames = generateModels.map(m => m.name.replace('models/', ''));
-        
-        // Prefer the newest standard flash models first
-        selectedModel = availableModelNames.find(name => name.includes('3.5-flash')) ||
-                        availableModelNames.find(name => name.includes('3-flash')) ||
-                        availableModelNames.find(name => name.includes('2.5-flash')) || 
-                        availableModelNames[0];
-
-        if (!selectedModel) {
-            throw new Error("No models supporting generateContent were found for this API key.");
-        }
-    } catch (err) {
-        console.warn(`Failed to list models: ${err.message}. Defaulting to gemini-2.5-flash`);
-        selectedModel = 'gemini-2.5-flash';
-    }
-
-    try {
-        // Clone request body
-        let currentBody = JSON.parse(JSON.stringify(requestBody));
-        
-        // For maximum compatibility across all model generations, polyfill the system instruction
-        delete currentBody.systemInstruction;
-        currentBody.contents.unshift({
-            role: "model",
-            parts: [{ text: "Understood. I will act as the AI Concierge." }]
-        });
-        currentBody.contents.unshift({
-            role: "user",
-            parts: [{ text: "SYSTEM INSTRUCTION (Follow these strictly): " + systemInstruction }]
-        });
-
-        // Use the dynamically selected model
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${GEMINI_API_KEY}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(currentBody)
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error?.message || 'Failed to connect to AI');
-        }
-
-        data = await response.json();
-    } catch (err) {
-        lastError = err;
-        throw err;
-    }
-
-    if (!data) {
-        throw new Error(lastError ? lastError.message : "Failed to generate response.");
-    }
-
-    const aiText = data.candidates[0].content.parts[0].text;
-
-    // Update history
-    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-    chatHistory.push({ role: "model", parts: [{ text: aiText }] });
-
-    // Keep history manageable
-    if (chatHistory.length > 10) chatHistory = chatHistory.slice(chatHistory.length - 10);
-
-    return aiText;
-}
+// API logic is now managed via js/api.js
 
 // Interactive Map Functions
 function suggestRoute() {

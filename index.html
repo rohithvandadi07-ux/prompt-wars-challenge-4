@@ -163,10 +163,10 @@
                     </div>
                     
                     <div class="mt-4 flex gap-4">
-                        <button class="flex-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 py-2 rounded-xl text-sm font-medium transition flex items-center justify-center gap-2" onclick="suggestRoute()" aria-label="Suggest Optimal Route">
+                        <button id="suggest-route-btn" class="flex-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 py-2 rounded-xl text-sm font-medium transition flex items-center justify-center gap-2" aria-label="Suggest Optimal Route">
                             <i class="fa-solid fa-route" aria-hidden="true"></i> Suggest Optimal Route
                         </button>
-                        <button class="flex-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 py-2 rounded-xl text-sm font-medium transition flex items-center justify-center gap-2" onclick="suggestAccessibleRoute()" aria-label="Find Accessible Paths">
+                        <button id="suggest-accessible-btn" class="flex-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 py-2 rounded-xl text-sm font-medium transition flex items-center justify-center gap-2" aria-label="Find Accessible Paths">
                             <i class="fa-solid fa-wheelchair" aria-hidden="true"></i> Accessible Paths
                         </button>
                     </div>
@@ -237,7 +237,7 @@
                                 </p>
                             </div>
                         </div>
-                        <button class="relative z-10 hover:bg-white/20 p-2 rounded-lg transition" title="Clear Chat" aria-label="Clear Chat" onclick="clearChat()">
+                        <button id="clear-chat-btn" class="relative z-10 hover:bg-white/20 p-2 rounded-lg transition" title="Clear Chat" aria-label="Clear Chat">
                             <i class="fa-solid fa-rotate-right" aria-hidden="true"></i>
                         </button>
                     </div>
@@ -249,8 +249,9 @@
                             <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-xs text-blue-500 hover:underline">Get Key</a>
                         </div>
                         <div class="flex gap-2">
+                            <label for="api-key-input" class="sr-only">Gemini API Key</label>
                             <input type="password" id="api-key-input" placeholder="Enter Gemini API Key..." class="flex-1 bg-white dark:bg-dark-bg border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-xs focus:outline-none focus:border-brand-500">
-                            <button onclick="saveApiKey()" class="bg-brand-500 hover:bg-brand-600 text-white px-3 py-1 rounded text-xs font-bold transition">Save</button>
+                            <button id="save-api-btn" class="bg-brand-500 hover:bg-brand-600 text-white px-3 py-1 rounded text-xs font-bold transition">Save</button>
                         </div>
                     </div>
 
@@ -276,12 +277,13 @@
                     <div class="p-3 border-t border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card">
                         <div class="flex items-end gap-2">
                             <div class="flex-1 relative">
-                                <textarea id="chat-input" rows="1" placeholder="Ask anything... (supports multiple languages)" class="w-full bg-gray-100 dark:bg-dark-bg border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 resize-none custom-scrollbar" oninput="this.style.height = '';this.style.height = Math.min(this.scrollHeight, 120) + 'px'" aria-label="Chat input message"></textarea>
-                                <button id="voice-btn" class="absolute right-3 bottom-3 text-gray-400 hover:text-brand-500 transition" title="Voice Input (Demo)" onclick="toggleVoiceInput()" aria-label="Toggle voice input">
+                                <label for="chat-input" class="sr-only">Chat message</label>
+                                <textarea id="chat-input" rows="1" placeholder="Ask anything... (supports multiple languages)" class="w-full bg-gray-100 dark:bg-dark-bg border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 resize-none custom-scrollbar" aria-label="Chat input message"></textarea>
+                                <button id="voice-btn" class="absolute right-3 bottom-3 text-gray-400 hover:text-brand-500 transition" title="Voice Input (Demo)" aria-label="Toggle voice input">
                                     <i class="fa-solid fa-microphone" aria-hidden="true"></i>
                                 </button>
                             </div>
-                            <button onclick="sendMessage()" id="send-btn" class="w-11 h-11 bg-brand-500 hover:bg-brand-600 text-white rounded-xl flex items-center justify-center transition shadow-lg shrink-0 disabled:opacity-50 disabled:cursor-not-allowed" aria-label="Send Message">
+                            <button id="send-btn" class="w-11 h-11 bg-brand-500 hover:bg-brand-600 text-white rounded-xl flex items-center justify-center transition shadow-lg shrink-0 disabled:opacity-50 disabled:cursor-not-allowed" aria-label="Send Message">
                                 <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -296,13 +298,15 @@
     <footer class="border-t border-gray-200 dark:border-dark-border py-6 mt-8">
         <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-500">
             <p>Built for Prompt Wars Challenge 4: Smart Stadiums & Tournament Operations.</p>
-            <p class="mt-1">Powered by Google Gemini API & Tailwind CSS.</p>
+            <p class="mt-1 font-medium text-brand-600 dark:text-brand-500">Generative AI enabled solution for FIFA 2026 operations.</p>
+            <p class="mt-2 text-xs text-gray-400">Data Privacy: All queries are processed securely. No personal data is stored beyond the session.</p>
         </div>
     </footer>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.3/dist/purify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="js/api.js"></script>
     <script src="js/utils.js"></script>
     <script src="script.js"></script>
 </body>
