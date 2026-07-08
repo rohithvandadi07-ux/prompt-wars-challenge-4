@@ -1,4 +1,5 @@
-const { fetchGeminiResponse } = require('../js/api');
+const { fetchGeminiResponse } = require('../public/js/api');
+const { getDemoResponse } = require('../public/js/utils');
 
 // Mock global fetch
 global.fetch = jest.fn();

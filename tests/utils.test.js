@@ -1,4 +1,4 @@
-const { getDemoResponse, isValidApiKeyFormat } = require('../js/utils');
+const { getDemoResponse, isValidApiKeyFormat, debounce, escapeHTML } = require('../public/js/utils');
 
 describe('Utils module', () => {
     
